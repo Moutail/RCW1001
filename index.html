@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projet Essentia - DevSquad</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: white;
+            position: relative;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+
+        .shape:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            left: 80%;
+            animation-delay: -5s;
+        }
+
+        .shape:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            left: 60%;
+            animation-delay: -10s;
+        }
+
+        .shape:nth-child(4) {
+            width: 120px;
+            height: 120px;
+            left: 30%;
+            animation-delay: -15s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .section {
+            width: 100%;
+            height: 100vh;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        .section.active {
+            display: flex;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .section-content {
+            text-align: center;
+            max-width: 95%;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 
+                0 25px 45px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 0 100px rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: visible;
+        }
+
+        .section-content::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            border-radius: 25px;
+            z-index: -1;
+            opacity: 0.6;
+            animation: borderGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes borderGlow {
+            0% { opacity: 0.6; }
+            100% { opacity: 0.9; }
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textGradient 3s ease infinite;
+            font-weight: 900;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+            letter-spacing: 3px;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
+        }
+
+        @keyframes textGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        h2 {
+            font-size: clamp(2rem, 6vw, 2.8rem);
+            margin-bottom: 30px;
+            color: #ffffff;
+            text-shadow: 
+                2px 2px 4px rgba(0, 0, 0, 0.8),
+                0 0 20px rgba(255, 255, 255, 0.3);
+            position: relative;
+            font-weight: 700;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(45deg, #4ecdc4, #45b7d1);
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
+        }
+
+        h3 {
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            margin-bottom: 15px;
+            color: #4ecdc4;
+            text-shadow: 
+                1px 1px 3px rgba(0, 0, 0, 0.8),
+                0 0 15px rgba(78, 205, 196, 0.4);
+            font-weight: 600;
+        }
+
+        p, li {
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #ffffff;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+            font-weight: 400;
+        }
+
+        .objectives {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .objective-card, .phase-card, .team-member, .risk-card {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 25px;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .objective-card::before, .phase-card::before, .team-member::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .objective-card:hover, .phase-card:hover, .team-member:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.8);
+            border-color: rgba(78, 205, 196, 0.6);
+        }
+
+        .objective-card:hover::before, .phase-card:hover::before, .team-member:hover::before {
+            left: 100%;
+        }
+
+        .risk-card {
+            background: rgba(255, 107, 107, 0.3);
+            border-left: 5px solid #ff6b6b;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 107, 107, 0.4);
+        }
+
+        .risk-card:hover {
+            transform: translateX(10px);
+            background: rgba(255, 107, 107, 0.4);
+            border-color: rgba(255, 107, 107, 0.6);
+        }
+
+        .phase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .budget-summary {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .budget-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            min-width: 150px;
+            backdrop-filter: blur(15px);
+            transition: transform 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .budget-item:hover {
+            transform: scale(1.05);
+            border-color: rgba(78, 205, 196, 0.5);
+        }
+
+        .budget-number {
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 900;
+            color: #4ecdc4;
+            display: block;
+            text-shadow: 
+                2px 2px 4px rgba(0, 0, 0, 0.8),
+                0 0 20px rgba(78, 205, 196, 0.6);
+        }
+
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .highlight {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.8));
+        }
+
+        .included-excluded {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .included, .excluded {
+            background: rgba(255, 255, 255, 0.12);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+        }
+
+        .included {
+            border-left: 5px solid #4ecdc4;
+            box-shadow: 0 0 30px rgba(78, 205, 196, 0.2);
+        }
+
+        .excluded {
+            border-left: 5px solid #ff6b6b;
+            box-shadow: 0 0 30px rgba(255, 107, 107, 0.2);
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 20px;
+            border-radius: 50px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.15);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(45deg, #4ecdc4, #45b7d1);
+            transform: scale(1.2);
+            box-shadow: 0 8px 25px rgba(78, 205, 196, 0.4);
+        }
+
+        .section-indicator {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px 25px;
+            border-radius: 30px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            z-index: 1000;
+            font-weight: bold;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4ecdc4, #45b7d1);
+            transition: width 0.3s ease;
+            z-index: 1001;
+            box-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
+        }
+
+        .presentation-controls {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .control-btn {
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            font-size: 12px;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
+        }
+
+        ul {
+            text-align: left;
+            margin-left: 20px;
+        }
+
+        .pulse {
+            animation: pulseEffect 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseEffect {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section-content {
+                padding: 25px;
+                max-height: 85vh;
+            }
+            
+            .navigation {
+                bottom: 20px;
+            }
+            
+            .included-excluded {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .section-indicator {
+                top: 20px;
+                right: 20px;
+                padding: 10px 15px;
+            }
+            
+            .presentation-controls {
+                top: 20px;
+                left: 20px;
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .objectives, .phase-grid, .team-grid, .risk-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .budget-summary {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Scroll bar styling */
+        .section-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .section-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .section-content::-webkit-scrollbar-thumb {
+            background: rgba(78, 205, 196, 0.6);
+            border-radius: 10px;
+        }
+
+        .section-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(78, 205, 196, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+
+    <div class="progress-bar" id="progressBar"></div>
+
+    <div class="presentation-controls">
+        <button class="control-btn" onclick="toggleFullscreen()">🔳 Plein écran</button>
+        <button class="control-btn" onclick="resetPresentation()">🔄 Reset</button>
+    </div>
+
+    <div class="section-indicator">
+        <span id="sectionCounter">1 / 9</span>
+    </div>
+
+    <!-- Section 1: Titre -->
+    <section class="section active">
+        <div class="container">
+            <div class="section-content">
+                <h1 class="pulse">ESSENTIA</h1>
+                <h3>Plateforme Numérique Inclusive</h3>
+                <p style="font-size: 1.5rem; margin-top: 40px;">
+                    Modernisation de la gestion des organisations<br>
+                    spirituelles et communautaires
+                </p>
+                <div style="margin-top: 50px;">
+                    <h3 class="highlight">Équipe DevSquad</h3>
+                    <p>Présentation du Projet - Planification Initiale</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Mission -->
+    <section class="section">
+        <div class="container">
+            <div class="section-content">
+                <h2>🎯 Notre Mission</h2>
+                <p style="font-size: 1.4rem; margin-bottom: 40px;">
+                    Mettre la <span class="highlight">technologie au service du lien humain et spirituel</span>
+                </p>
+                
+                <div style="background: rgba(0, 0, 0, 0.7); padding: 30px; border-radius: 15px; margin: 30px 0; border: 2px solid rgba(255, 255, 255, 0.2);">
+                    <h3>✨ Contribution Unique</h3>
+                    <p>Fusion des besoins technologiques avec les réalités culturelles et spirituelles</p>
+                </div>
+
+                <div style="background: rgba(78, 205, 196, 0.4); padding: 25px; border-radius: 15px; border-left: 5px solid #4ecdc4; border: 2px solid rgba(78, 205, 196, 0.6);">
+                    <strong style="color: #ffffff; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);">Solution complète, intuitive et personnalisable</strong><br>
+                    <span style="color: #ffffff; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);">Gestion administrative, financière et événementielle</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Objectifs SMART -->
+    <section class="section">
+        <div class="container">
+            <div class="section-content">
+                <h2>🎯 Objectifs SMART</h2>
+                
+                <div class="objectives">
+                    <div class="objective-card">
+                        <h3>🚀 Prototype Fonctionnel</h3>
+                        <p>4 modules actifs via interface web</p>
+                        <strong>Échéance: Fin juin 2025</strong>
+                    </div>
+                    
+                    <div class="objective-card">
+                        <h3>📋 Livrables Complets</h3>
+                        <p>Documentation et planification</p>
+                        <strong>Avant semaine 14</strong>
+                    </div>
+                    
+                    <div class="objective-card">
+                        <h3>🤝 Collaboration Efficace</h3>
+                        <p>Communication fluide</p>
+                        <strong>1 réunion/semaine minimum</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Portée -->
+    <section class="section">
+        <div class="container">
+            <div class="section-content">
+                <h2>📋 Portée du Projet</h2>
+                
+                <div class="included-excluded">
+                    <div class="included">
+                        <h3 style="color: #4ecdc4;">✅ INCLUS</h3>
+                        <ul>
+                            <li>Prototype avec 4 modules</li>
+                            <li>Interface web React</li>
+                            <li>Backend Node.js</li>
+                            <li>Base de données MongoDB</li>
+                            <li>Documentation complète</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="excluded">
+                        <h3 style="color: #ff6b6b;">❌ EXCLUS</h3>
+                        <ul>
+                            <li>Application mobile native</li>
+                            <li>Modules avancés (streaming)</li>
+                            <li>Géolocalisation</li>
+                            <li>Gestion multilingue</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="margin-top: 40px;">
+                    <h3>🎯 4 Modules Principaux</h3>
+                    <div class="phase-grid">
+                        <div class="phase-card">👥 Gestion Membres</div>
+                        <div class="phase-card">📅 Événements</div>
+                        <div class="phase-card">💰 Contributions</div>
+                        <div class="phase-card">📊 Finances</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Planning Général -->
+    <section class="section">
+        <div class="container">
+            <div class="section-content">
+                <h2>📅 Planning Méthodologique</h2>
+                
+                <div style="background: rgba(0, 0, 0, 0.7); padding: 30px; border-radius: 20px; margin: 30px 0; border: 2px solid rgba(78, 205, 196, 0.3);">
+                    <h3 style="color: #4ecdc4;">🏃‍♂️ Méthode Agile - 4 Sprints</h3>
+                    <p style="font-size: 1.2rem; margin-bottom: 20px;">Développement itératif avec livrables à chaque sprint</p>
+                    
+                    <div class="phase-grid">
+                        <div class="phase-card" style="background: linear-gradient(135deg, rgba(78, 205, 196, 0.3), rgba(78, 205, 196, 0.1));">
+                            <h3>🚀 Sprint 1</h3>
+                            <strong>FONDATIONS</strong>
+                            <p>Architecture & Auth</p>
+                        </div>
+                        
+                        <div class="phase-card" style="background: linear-gradient(135deg, rgba(69, 183, 209, 0.3), rgba(69, 183, 209, 0.1));">
+                            <h3>👥 Sprint 2</h3>
+                            <strong>CORE FEATURES</strong>
+                            <p>Membres & Événements</p>
+                        </div>
+                        
+                        <div class="phase-card" style="background: linear-gradient(135deg, rgba(150, 206, 180, 0.3), rgba(150, 206, 180, 0.1));">
+                            <h3>💰 Sprint 3</h3>
+                            <strong>FINANCES</strong>
+                            <p>Dons & Comptabilité</p>
+                        </div>
+                        
+                        <div class="phase-card" style="background: linear-gradient(135deg, rgba(255, 107, 107, 0.3), rgba(255, 107, 107, 0.1));">
+                            <h3>📈 Sprint 4</h3>
+                            <strong>POLISH</strong>
+                            <p>Tests & Documentation</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: rgba(0, 0, 0, 0.7); padding: 25px; border-radius: 15px; margin-top: 30px; border: 2px solid rgba(255, 255, 255, 0.2);">
+                    <h3>⚙️ Technologies & Outils</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px;">
+                        <div>
+                            <p><strong style="color: #4ecdc4;">Development:</strong> React, FastAPI, MongoDB</p>
+                            <p><strong style="color: #4ecdc4;">DevOps:</strong> Docker, GitHub Actions</p>
+                        </div>
+                        <div>
+                            <p><strong style="color: #4ecdc4;">Communication:</strong> Discord, Trello</p>
+                            <p><strong style="color: #4ecdc4;">Architecture:</strong> Microservices</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 6: Détail des Sprints -->
+    <section class="section">
+        <div class="container">
+            <div class="section-content">
+                <h2>📋 Détail des Sprints</h2>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin: 30px 0;">
+                    <div style="background: rgba(0, 0, 0, 0.7); padding: 25px; border-radius: 15px; border-left: 5px solid #4ecdc4; border: 2px solid rgba(78, 205, 196, 0.3);">
+                        <h3 style="color: #4ecdc4;">🚀 SPRINT 1 - FONDATIONS</h3>
+                        <p><strong>Semaines 1-3 • 25h</strong></p>
+                        <ul style="font-size: 0.95rem; margin-top: 15px;">
+                            <li>✅ Architecture microservices</li>
+                            <li>✅ Service d'authentification</li>
+                            <li>✅ MongoDB + Docker</li>
+                            <li>✅ Frontend React base</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="background: rgba(0, 0, 0, 0.7); padding: 25px; border-radius: 15px; border-left: 5px solid #45b7d1; border: 2px solid rgba(69, 183, 209, 0.3);">
+                        <h3 style="color: #45b7d1;">👥 SPRINT 2 - MEMBRES & ÉVÉNEMENTS</h3>
+                        <p><strong>Semaines 4-6 • 25h</strong></p>
+                        <ul style="font-size: 0.95rem; margin-top: 15px;">
+                            <li>✅ Members Service (CRUD)</li>
+                            <li>✅ Events Service (CRUD)</li>
+                            <li>✅ Interfaces React</li>
+                            <li>✅ Inscriptions événements</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin: 20px 0;">
+                    <div style="background: rgba(0, 0, 0, 0.7); padding: 25px; border-radius: 15px; border-left: 5px solid #96ceb4; border: 2px solid rgba(150, 206, 180, 0.3);">
+                        <h3 style="color: #96ceb4;">💰 SPRINT 3 - FINANCES</h3>
+                        <p><strong>Semaines 7-9 • 25h</strong></p>
+                        <ul style="font-size: 0.95rem; margin-top: 15px;">
+                            <li>✅ Donations Service</li>
+                            <li>✅ Finance Service</li>
+                            <li>✅ Interfaces contribution</li>
+                            <li>✅ Génération reçus</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="background: rgba(0, 0, 0, 0.7); padding: 25px; border-radius: 15px; border-left: 5px solid #ff6b6b; border: 2px solid rgba(255, 107, 107, 0.3);">
+                        <h3 style="color: #ff6b6b;">📈 SPRINT 4 - FINALISATION</h3>
+                        <p><strong>Semaines 10-12 • 23h</strong></p>
+                        <ul style="font-size: 0.95rem; margin-top: 15px;">
+                            <li>✅ Notifications Service</li>
+                            <li>✅ Reports Service</li>
+                            <li>✅ UI/UX Polish</li>
+                            <li>✅ Tests + Documentation</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="budget-summary" style="margin-top: 30px;">
+                    <div class="budget-item">
+                        <span class="budget-number">98h</span>
+                        <p>Effort Total</p>
+                    </div>
+                    <div class="budget-item">
+                        <span class="budget-number">6</span>
+                        <p>Microservices</p>
+                    </div>
+                    <div class="budget-item">
+                        <span class="budget-number">12</span>
+                        <p>Semaines</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 7: Budget et Équipe -->
+    <section class="section">
+        <div class="container">
+            <div class="section-content">
+                <h2>💰 Budget & Équipe</h2>
+                
+                <div class="budget-summary">
+                    <div class="budget-item">
+                        <span class="budget-number">98h</span>
+                        <p>Effort Total</p>
+                    </div>
+                    <div class="budget-item">
+                        <span class="budget-number">11,760$</span>
+                        <p>Coût Total</p>
+                    </div>
+                    <div class="budget-item">
+                        <span class="budget-number">120$/h</span>
+                        <p>Taux Horaire</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 40px;">👥 Répartition par Rôle</h3>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <h3>Coordonnateur/PO</h3>
+                        <p>18h • 2,160$</p>
+                        <small>Planification & Suivi</small>
+                    </div>
+                    <div class="team-member">
+                        <h3>Dev Principal</h3>
+                        <p>22h • 2,640$</p>
+                        <small>Développement & Tests</small>
+                    </div>
+                    <div class="team-member">
+                        <h3>Dev/Testeur</h3>
+                        <p>20h • 2,400$</p>
+                        <small>Développement & Debug</small>
+                    </div>
+                    <div class="team-member">
+                        <h3>QA/Config</h3>
+                        <p>14h • 1,680$</p>
+                        <small>Qualité & Git</small>
+                    </div>
+                </div>
+
+                <div style="background: rgba(0, 0, 0, 0.7); padding: 25px; border-radius: 15px; margin-top: 40px; border: 2px solid rgba(78, 205, 196, 0.3);">
+                    <h3 style="color: #4ecdc4;">⚡ Répartition par Sprint</h3>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 20px;">
+                        <div style="text-align: center; padding: 15px; background: rgba(78, 205, 196, 0.2); border-radius: 10px;">
+                            <strong style="color: #4ecdc4;">Sprint 1</strong>
+                            <p style="font-size: 1.5rem; margin: 5px 0;">25h</p>
+                        </div>
+                        <div style="text-align: center; padding: 15px; background: rgba(69, 183, 209, 0.2); border-radius: 10px;">
+                            <strong style="color: #45b7d1;">Sprint 2</strong>
+                            <p style="font-size: 1.5rem; margin: 5px 0;">25h</p>
+                        </div>
+                        <div style="text-align: center; padding: 15px; background: rgba(150, 206, 180, 0.2); border-radius: 10px;">
+                            <strong style="color: #96ceb4;">Sprint 3</strong>
+                            <p style="font-size: 1.5rem; margin: 5px 0;">25h</p>
+                        </div>
+                        <div style="text-align: center; padding: 15px; background: rgba(255, 107, 107, 0.2); border-radius: 10px;">
+                            <strong style="color: #ff6b6b;">Sprint 4</strong>
+                            <p style="font-size: 1.5rem; margin: 5px 0;">23h</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 8: Risques -->
+    <section class="section">
+        <div class="container">
+            <div class="section-content">
+                <h2>⚠️ Gestion des Risques</h2>
+                
+                <div class="risk-grid">
+                    <div class="risk-card">
+                        <h3>📅 Retards</h3>
+                        <p><strong>Mitigation:</strong> Planning hebdomadaire</p>
+                        <p><strong>Contingence:</strong> Réduire fonctionnalités</p>
+                    </div>
+                    
+                    <div class="risk-card">
+                        <h3>🔧 Manque Technique</h3>
+                        <p><strong>Mitigation:</strong> Formation équipe</p>
+                        <p><strong>Contingence:</strong> Simplifier solutions</p>
+                    </div>
+                    
+                    <div class="risk-card">
+                        <h3>👥 Conflits Équipe</h3>
+                        <p><strong>Mitigation:</strong> Communication claire</p>
+                        <p><strong>Contingence:</strong> Contact professeur</p>
+                    </div>
+                    
+                    <div class="risk-card">
+                        <h3>💾 Perte Données</h3>
+                        <p><strong>Mitigation:</strong> Sauvegardes GitHub</p>
+                        <p><strong>Contingence:</strong> Dernière sauvegarde</p>
+                    </div>
+                </div>
+
+                <div style="background: rgba(78, 205, 196, 0.4); padding: 25px; border-radius: 15px; margin-top: 30px; border: 2px solid rgba(78, 205, 196, 0.6);">
+                    <h3>🛡️ Stratégie Proactive</h3>
+                    <p style="color: #ffffff; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);">Tests précoces utilisateurs • Communication hebdomadaire • Documentation continue</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 9: Critères de Succès -->
+    <section class="section">
+        <div class="container">
+            <div class="section-content">
+                <h2>🏆 Critères de Succès</h2>
+                
+                <div class="objectives">
+                    <div class="objective-card">
+                        <h3>✅ Livraison</h3>
+                        <p>4 modules fonctionnels avant fin de session</p>
+                    </div>
+                    
+                    <div class="objective-card">
+                        <h3>⏰ Échéancier</h3>
+                        <p>Respect des dates imposées</p>
+                    </div>
+                    
+                    <div class="objective-card">
+                        <h3>📚 Documentation</h3>
+                        <p>Documentation complète et claire</p>
+                    </div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, rgba(255, 107, 107, 0.4), rgba(78, 205, 196, 0.4)); padding: 40px; border-radius: 20px; margin-top: 40px; border: 2px solid rgba(255, 255, 255, 0.3); backdrop-filter: blur(15px);">
+                    <h3 style="color: #4ecdc4; margin-bottom: 20px;">🚀 Prêts pour le Succès!</h3>
+                    <p style="font-size: 1.3rem; color: #ffffff; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);">
+                        <strong>DevSquad</strong> - Transformons ensemble la gestion communautaire
+                    </p>
+                    <p style="margin-top: 20px; opacity: 0.9; color: #ffffff; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);">
+                        Méthode agile • Sprints 2 semaines • Communication Discord
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="navigation">
+        <button class="nav-btn active" onclick="goToSection(0)">1</button>
+        <button class="nav-btn" onclick="goToSection(1)">2</button>
+        <button class="nav-btn" onclick="goToSection(2)">3</button>
+        <button class="nav-btn" onclick="goToSection(3)">4</button>
+        <button class="nav-btn" onclick="goToSection(4)">5</button>
+        <button class="nav-btn" onclick="goToSection(5)">6</button>
+        <button class="nav-btn" onclick="goToSection(6)">7</button>
+        <button class="nav-btn" onclick="goToSection(7)">8</button>
+        <button class="nav-btn" onclick="goToSection(8)">9</button>
+    </div>
+
+    <script>
+        let currentSection = 0;
+        const sections = document.querySelectorAll('.section');
+        const navBtns = document.querySelectorAll('.nav-btn');
+        const sectionCounter = document.getElementById('sectionCounter');
+        const progressBar = document.getElementById('progressBar');
+
+        function updateSection(index) {
+            // Remove active class from all sections and nav buttons
+            sections.forEach(section => section.classList.remove('active'));
+            navBtns.forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to current section and nav button
+            sections[index].classList.add('active');
+            navBtns[index].classList.add('active');
+            
+            // Update counter and progress bar
+            sectionCounter.textContent = `${index + 1} / ${sections.length}`;
+            progressBar.style.width = `${((index + 1) / sections.length) * 100}%`;
+            
+            currentSection = index;
+
+            // Scroll to top of section content if needed
+            const sectionContent = sections[index].querySelector('.section-content');
+            if (sectionContent) {
+                sectionContent.scrollTop = 0;
+            }
+        }
+
+        function goToSection(index) {
+            updateSection(index);
+        }
+
+        function nextSection() {
+            if (currentSection < sections.length - 1) {
+                updateSection(currentSection + 1);
+            }
+        }
+
+        function prevSection() {
+            if (currentSection > 0) {
+                updateSection(currentSection - 1);
+            }
+        }
+
+        function resetPresentation() {
+            updateSection(0);
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log('Fullscreen not supported');
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case 'ArrowRight':
+                case ' ':
+                case 'Enter':
+                    e.preventDefault();
+                    nextSection();
+                    break;
+                case 'ArrowLeft':
+                case 'Backspace':
+                    e.preventDefault();
+                    prevSection();
+                    break;
+                case 'Home':
+                    e.preventDefault();
+                    updateSection(0);
+                    break;
+                case 'End':
+                    e.preventDefault();
+                    updateSection(sections.length - 1);
+                    break;
+                case 'Escape':
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen();
+                    }
+                    break;
+                case 'F11':
+                    e.preventDefault();
+                    toggleFullscreen();
+                    break;
+            }
+        });
+
+        // Touch/swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+        let touchStartY = 0;
+        let touchEndY = 0;
+
+        document.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        });
+
+        document.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            touchEndY = e.changedTouches[0].screenY;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 100;
+            const diffX = touchStartX - touchEndX;
+            const diffY = Math.abs(touchStartY - touchEndY);
+            
+            // Only handle horizontal swipes (ignore vertical scrolling)
+            if (Math.abs(diffX) > swipeThreshold && diffY < swipeThreshold) {
+                if (diffX > 0) {
+                    // Swipe left - next section
+                    nextSection();
+                } else {
+                    // Swipe right - previous section
+                    prevSection();
+                }
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateSection(0);
+            
+            // Show navigation hint
+            setTimeout(() => {
+                const hint = document.createElement('div');
+                hint.style.cssText = `
+                    position: fixed;
+                    bottom: 120px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: rgba(0, 0, 0, 0.8);
+                    color: white;
+                    padding: 12px 20px;
+                    border-radius: 25px;
+                    font-size: 14px;
+                    z-index: 1002;
+                    backdrop-filter: blur(10px);
+                    animation: slideIn 0.5s ease-out;
+                `;
+                hint.innerHTML = '⌨️ Flèches ← → • ESPACE • Chiffres 1-9 • F11 plein écran';
+                document.body.appendChild(hint);
+                
+                setTimeout(() => {
+                    hint.style.opacity = '0';
+                    hint.style.transition = 'opacity 0.5s ease';
+                    setTimeout(() => hint.remove(), 500);
+                }, 5000);
+            }, 2000);
+        });
+
+        // Number key navigation
+        document.addEventListener('keydown', function(e) {
+            const num = parseInt(e.key);
+            if (num >= 1 && num <= 9) {
+                e.preventDefault();
+                updateSection(num - 1);
+            }
+        });
+
+        // Prevent context menu on right click for cleaner presentation
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // Auto-hide cursor after inactivity
+        let cursorTimeout;
+        function hideCursor() {
+            document.body.style.cursor = 'none';
+        }
+        function showCursor() {
+            document.body.style.cursor = 'default';
+            clearTimeout(cursorTimeout);
+            cursorTimeout = setTimeout(hideCursor, 3000);
+        }
+        document.addEventListener('mousemove', showCursor);
+    </script>
+</body>
+</html>

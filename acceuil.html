@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Église Communautaire - Accueil</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Header et Navigation */
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .top-bar {
+            background: rgba(0,0,0,0.2);
+            padding: 8px 0;
+            font-size: 14px;
+            color: white;
+            text-align: center;
+        }
+
+        .top-bar a {
+            color: #f39c12;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            border-radius: 50%;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 0;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 15px 20px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: #f39c12;
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            min-width: 220px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .nav-item:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-link {
+            display: block;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-link:hover {
+            background: #f8f9fa;
+            color: #f39c12;
+            padding-left: 25px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%234facfe"/><stop offset="100%" style="stop-color:%2300f2fe"/></linearGradient></defs><rect width="1200" height="600" fill="url(%23bg)"/><circle cx="200" cy="150" r="100" fill="rgba(255,255,255,0.1)"/><circle cx="800" cy="400" r="150" fill="rgba(255,255,255,0.08)"/><circle cx="1000" cy="200" r="80" fill="rgba(255,255,255,0.12)"/></svg>');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 5rem);
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            color: white;
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(243, 156, 18, 0.6);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #333;
+            transform: translateY(-3px);
+        }
+
+        /* Quick Stats */
+        .stats {
+            background: #34495e;
+            padding: 60px 5%;
+            color: white;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #f39c12;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 80px 5%;
+            background: #f8f9fa;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .section-title p {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-top: 4px solid #f39c12;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .service-card p {
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+
+        /* Latest Content */
+        .latest-content {
+            padding: 80px 5%;
+            background: white;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .content-image {
+            height: 200px;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .content-body {
+            padding: 25px;
+        }
+
+        .content-meta {
+            color: #f39c12;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .content-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .content-card p {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+
+        .read-more {
+            color: #f39c12;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .read-more:hover {
+            text-decoration: underline;
+        }
+
+        /* Call to Action */
+        .cta-section {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            padding: 80px 5%;
+            text-align: center;
+            color: white;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 50px 5% 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto 30px;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 20px;
+            color: #f39c12;
+        }
+
+        .footer-section p, .footer-section a {
+            color: #bdc3c7;
+            text-decoration: none;
+            line-height: 1.8;
+        }
+
+        .footer-section a:hover {
+            color: #f39c12;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #34495e;
+            padding-top: 20px;
+            text-align: center;
+            color: #95a5a6;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: #2c3e50;
+                flex-direction: column;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .nav-link {
+                padding: 15px 20px;
+                border-bottom: 1px solid #34495e;
+            }
+
+            .dropdown {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                background: #34495e;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .services-grid,
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="top-bar">
+            📞 +1 (555) 123-4567 | ✉️ contact@eglise-communautaire.org | 📍 123 Rue de la Paix, Montréal
+        </div>
+        
+        <nav class="navbar">
+            <div class="logo">
+                <div class="logo-icon">🏛️</div>
+                Église Communautaire
+            </div>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Accueil</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Qui sommes-nous ?</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-link">Vision</a>
+                        <a href="#" class="dropdown-link">Mission</a>
+                        <a href="#" class="dropdown-link">Valeurs</a>
+                        <a href="#" class="dropdown-link">Crédo</a>
+                        <a href="#" class="dropdown-link">Principes</a>
+                    </div>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Sermons</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-link">Ajouter un sermon</a>
+                        <a href="#" class="dropdown-link">Écouter en ligne</a>
+                        <a href="#" class="dropdown-link">Partager</a>
+                    </div>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Événements</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-link">Conférences & Congrès</a>
+                        <a href="#" class="dropdown-link">Colloque</a>
+                        <a href="#" class="dropdown-link">Croisade</a>
+                        <a href="#" class="dropdown-link">Retraite</a>
+                        <a href="#" class="dropdown-link">Formation</a>
+                    </div>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Inscription en ligne</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Blog & Articles</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Soutenir / Faire un don</a>
+                </li>
+            </ul>
+            
+            <button class="mobile-menu-toggle" id="mobileToggle">☰</button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Bienvenue dans notre Communauté</h1>
+            <p>Un lieu de foi, d'espoir et d'amour où chacun trouve sa place</p>
+            <div class="cta-buttons">
+                <a href="#" class="btn btn-primary">Nous Découvrir</a>
+                <a href="#" class="btn btn-secondary">Regarder en Direct</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-container">
+            <div class="stat-item">
+                <span class="stat-number">500+</span>
+                <span class="stat-label">Membres actifs</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">25</span>
+                <span class="stat-label">Années de service</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">100+</span>
+                <span class="stat-label">Événements annuels</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">50+</span>
+                <span class="stat-label">Projets communautaires</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services">
+        <div class="section-title">
+            <h2>Nos Services</h2>
+            <p>Découvrez comment notre communauté peut vous accompagner dans votre parcours spirituel</p>
+        </div>
+        
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🙏</div>
+                <h3>Services Religieux</h3>
+                <p>Participez à nos célébrations hebdomadaires et occasions spéciales dans un esprit de communion et de recueillement.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">👨‍👩‍👧‍👦</div>
+                <h3>Vie Communautaire</h3>
+                <p>Rejoignez notre famille spirituelle à travers des activités, des groupes de discussion et des événements sociaux.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">📚</div>
+                <h3>Formation & Enseignement</h3>
+                <p>Approfondissez votre foi grâce à nos programmes d'éducation religieuse et nos sessions d'étude biblique.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🤝</div>
+                <h3>Action Sociale</h3>
+                <p>Participez à nos initiatives d'entraide communautaire et nos projets de solidarité locale et internationale.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">💒</div>
+                <h3>Événements Spéciaux</h3>
+                <p>Célébrez les moments importants de la vie avec nous : baptêmes, mariages, et autres cérémonies sacrées.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">💝</div>
+                <h3>Accompagnement Spirituel</h3>
+                <p>Bénéficiez de conseils personnalisés et de soutien spirituel dans les moments de joie comme d'épreuve.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Content -->
+    <section class="latest-content">
+        <div class="section-title">
+            <h2>Dernières Nouvelles</h2>
+            <p>Restez connectés avec les derniers sermons, articles et actualités de notre communauté</p>
+        </div>
+        
+        <div class="content-grid">
+            <article class="content-card">
+                <div class="content-image">🎤</div>
+                <div class="content-body">
+                    <div class="content-meta">Sermon • Il y a 2 jours</div>
+                    <h3>La Force de la Foi dans l'Adversité</h3>
+                    <p>Découvrez comment la foi peut nous guider à travers les moments difficiles et nous donner la force de surmonter les défis...</p>
+                    <a href="#" class="read-more">Écouter le sermon →</a>
+                </div>
+            </article>
+            
+            <article class="content-card">
+                <div class="content-image">📅</div>
+                <div class="content-body">
+                    <div class="content-meta">Événement • Dans 5 jours</div>
+                    <h3>Conférence Annuelle 2024</h3>
+                    <p>Rejoignez-nous pour notre conférence annuelle sur le thème "Construire des Ponts de Compassion"...</p>
+                    <a href="#" class="read-more">S'inscrire maintenant →</a>
+                </div>
+            </article>
+            
+            <article class="content-card">
+                <div class="content-image">✍️</div>
+                <div class="content-body">
+                    <div class="content-meta">Article • Il y a 1 semaine</div>
+                    <h3>L'Importance de la Gratitude</h3>
+                    <p>Réflexion sur la pratique de la gratitude quotidienne et son impact sur notre bien-être spirituel et mental...</p>
+                    <a href="#" class="read-more">Lire l'article →</a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <h2>Rejoignez Notre Communauté</h2>
+        <p>Découvrez un lieu d'accueil, de partage et de croissance spirituelle</p>
+        <div class="cta-buttons">
+            <a href="#" class="btn btn-secondary">Nous Visiter</a>
+            <a href="#" class="btn" style="background: white; color: #f39c12; margin-left: 20px;">Faire un Don</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>📍 123 Rue de la Paix<br>Montréal, QC H1X 1X1</p>
+                <p>📞 +1 (555) 123-4567</p>
+                <p>✉️ contact@eglise-communautaire.org</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Horaires</h3>
+                <p>Dimanche: 9h00 - 12h00</p>
+                <p>Mercredi: 19h00 - 21h00</p>
+                <p>Vendredi: 18h00 - 20h00</p>
+                <p>Bureau: Lun-Ven 9h00-17h00</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Liens Rapides</h3>
+                <p><a href="#">Qui sommes-nous</a></p>
+                <p><a href="#">Sermons en ligne</a></p>
+                <p><a href="#">Événements</a></p>
+                <p><a href="#">Blog</a></p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Suivez-nous</h3>
+                <p><a href="#">📘 Facebook</a></p>
+                <p><a href="#">📷 Instagram</a></p>
+                <p><a href="#">📺 YouTube</a></p>
+                <p><a href="#">🐦 Twitter</a></p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Église Communautaire. Tous droits réservés. | <a href="#">Politique de confidentialité</a> | <a href="#">Conditions d'utilisation</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobileToggle').addEventListener('click', function() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll effect to hero section
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        // Animate stats when they come into view
+        const observerOptions = {
+            threshold: 0.5,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statNumbers = entry.target.querySelectorAll('.stat-number');
+                    statNumbers.forEach(stat => {
+                        const finalNumber = stat.textContent;
+                        const number = parseInt(finalNumber.replace(/\D/g, ''));
+                        animateNumber(stat, 0, number, 2000);
+                    });
+                }
+            });
+        }, observerOptions);
+
+        const statsSection = document.querySelector('.stats');
+        if (statsSection) {
+            observer.observe(statsSection);
+        }
+
+        function animateNumber(element, start, end, duration) {
+            let startTime = null;
+            const step = (timestamp) => {
+                if (!startTime) startTime = timestamp;
+                const progress = Math.min((timestamp - startTime) / duration, 1);
+                const current = Math.floor(progress * (end - start) + start);
+                element.textContent = current + (element.textContent.includes('+') ? '+' : '');
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                }
+            };
+            requestAnimationFrame(step);
+        }
+    </script>
+</body>
+</html>
