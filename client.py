@@ -1,6 +1,6 @@
 import requests
 # url = "http://localhost:8000/test"
-url = 'https://rcw1001-dhdjeqb7cyfvhkh8.canadacentral-01.azurewebsites.net/'
+url = 'https://app-rcw-cmgwamd3dbc2h7aa.canadaeast-01.azurewebsites.net'
  
 response = requests.get(url)
  
